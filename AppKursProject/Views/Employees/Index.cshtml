@@ -1,0 +1,68 @@
+﻿@model IEnumerable<AppKursProject.Models.Employee>
+@using AppKursProject.ViewModels.Employees
+
+@{
+    ViewData["Title"] = "Список Сотрудников";
+    var sortViewModel = ViewData["SortViewModel"] as EmployeeSortViewModel;
+}
+
+<h1>Список Сотрудников</h1>
+
+<p>
+    <a asp-action="Create">Добавить нового сотрудника</a>
+</p>
+
+<div>
+    <label>Поиск:</label>
+    <input type="text" id="filterValue" />
+    <button onclick="applyFilter()">Применить</button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a href="javascript:void(0)" onclick="sortTable('Name', '@sortViewModel.NameSort')">Имя</a>
+            </th>
+            <th>
+                <a href="javascript:void(0)" onclick="sortTable('Position', '@sortViewModel.PositionSort')">Должность</a>
+            </th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody id="employeeList">
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => employee.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => employee.Position)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@employee.EmployeeId">Изменить</a> |
+                    <a asp-action="Details" asp-route-id="@employee.EmployeeId">Подробнее</a> |
+                    <a asp-action="Delete" asp-route-id="@employee.EmployeeId">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function sortTable(column, sortOrder) {
+            var url = '@Url.Action("Index", "Employees")';
+            url += '?sortOrder=' + sortOrder;
+            window.location.href = url;
+        }
+
+        function applyFilter() {
+            var filterValue = document.getElementById("filterValue").value;
+            var url = '@Url.Action("Index", "Employees")';
+            url += '?filterValue=' + filterValue;
+            window.location.href = url;
+        }
+    </script>
+}

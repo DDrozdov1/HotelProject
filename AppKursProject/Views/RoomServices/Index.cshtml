@@ -1,0 +1,42 @@
+﻿@model IEnumerable<AppKursProject.Models.RoomService>
+
+@{
+    ViewData["Title"] = "Список";
+}
+
+<h1>Список</h1>
+
+<p>
+    <a asp-action="Create">Создать новый</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.EmployeeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Room.RoomId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ServiceId">Редактировать</a> |
+                    <a asp-action="Details" asp-route-id="@item.ServiceId">Подробнее</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ServiceId">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

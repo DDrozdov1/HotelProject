@@ -1,0 +1,88 @@
+﻿@model IEnumerable<AppKursProject.Models.Room>
+@using AppKursProject.ViewModels
+
+@{
+    ViewData["Title"] = "Номера";
+}
+
+<h1>Номера</h1>
+
+<p>
+    <a asp-action="Create">Создать новый</a>
+</p>
+
+<div>
+    <form id="filterForm" action="@Url.Action("Index")" method="get">
+        <label for="type">Фильтр по типу:</label>
+        <select name="type" id="type">
+            <option value="">Все</option>
+            <option value="Single">Одноместный</option>
+            <option value="Double">Двухместный</option>
+            <option value="Suite">Люкс</option>
+        </select>
+        <button type="button" id="filterButton">Применить фильтр</button>
+    </form>
+</div>
+
+<div id="roomsContainer">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Номер комнаты
+                </th>
+                <th>
+                    Тип
+                </th>
+                <th>
+                    Вместимость
+                </th>
+                <th>
+                    Описание
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="roomsList">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Capacity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.RoomId">Редактировать</a> |
+                        <a asp-action="Details" asp-route-id="@item.RoomId">Детали</a> |
+                        <a asp-action="Delete" asp-route-id="@item.RoomId">Удалить</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#filterButton').on('click', function () {
+            var formData = $('#filterForm').serialize();
+            $.ajax({
+                url: '@Url.Action("Index")',
+                type: 'GET',
+                data: formData,
+                success: function (result) {
+                    $('#roomsList').html($(result).find('#roomsList').html());
+                }
+            });
+        });
+    });
+</script>

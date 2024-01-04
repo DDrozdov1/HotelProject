@@ -1,0 +1,68 @@
+﻿@model IEnumerable<AppKursProject.Models.Customer>
+@using AppKursProject.ViewModels.Customers
+
+@{
+    ViewData["Title"] = "Index";
+    var sortViewModel = ViewData["SortViewModel"] as CustomerSortViewModel;
+}
+
+<h1>Клиенты</h1>
+
+<p>
+    <a asp-action="Create">Добавить клиента</a>
+</p>
+
+<div>
+    <label>Поиск:</label>
+    <input type="text" id="filterValue" />
+    <button onclick="applyFilter()">Применить</button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a href="javascript:void(0)" onclick="sortTable('FullName', '@sortViewModel.FullNameSort')">ФИО</a>
+            </th>
+            <th>
+                <a href="javascript:void(0)" onclick="sortTable('PassportData', '@sortViewModel.PassportDataSort')">Паспортные данные</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="customerList">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PassportData)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CustomerId">Изменить</a> |
+                    <a asp-action="Details" asp-route-id="@item.CustomerId">Подробности</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CustomerId">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function sortTable(column, sortOrder) {
+            var url = '@Url.Action("Index", "Customers")';
+            url += '?sortOrder=' + sortOrder;
+            window.location.href = url;
+        }
+
+        function applyFilter() {
+            var filterValue = document.getElementById("filterValue").value;
+            var url = '@Url.Action("Index", "Customers")';
+            url += '?filterValue=' + filterValue;
+            window.location.href = url;
+        }
+    </script>
+}

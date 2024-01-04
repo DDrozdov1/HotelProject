@@ -1,0 +1,54 @@
+﻿@model IEnumerable<AppKursProject.Models.Stay>
+
+@{
+    ViewData["Title"] = "Список";
+}
+
+<h1>Список</h1>
+
+<p>
+    <a asp-action="Create">Создать новое</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckInDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckOutDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckInDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckOutDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Room.RoomId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.StayId">Редактировать</a> |
+                    <a asp-action="Details" asp-route-id="@item.StayId">Подробнее</a> |
+                    <a asp-action="Delete" asp-route-id="@item.StayId">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
